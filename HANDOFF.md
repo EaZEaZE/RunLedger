@@ -90,11 +90,11 @@ npm.cmd run dev      # 或 npm.cmd run start（需先 build）
 
 1. 首屏 2 条 `SyntaxError` 已在干净构建下未复现，判断为旧构建 chunk 缓存；录制前在录制机上清缓存复核一次，仍不能凭旧记录宣称控制台无错误。
 2. 真实移动设备、更多浏览器验收；390 px 只是 CSS 模拟。
-3. AI 上游成功路径未端到端验证。
-4. 公开 Git 仓库与真实细粒度提交历史（当前环境无 git）。
-5. 至少 3 轮原始 Prompt 导出（含真实修 Bug 过程）。
-6. 5–8 分钟 1080p MP4，其中至少 2 分钟真实 AI 协同。
-7. 官网提交。
+3. AI 上游成功路径未端到端验证（`/api/interpret`；送货单项目的 `/api/parse` 已用真实 GLM 验证成功）。
+4. 5–8 分钟 1080p MP4，其中至少 2 分钟真实 AI 协同。
+5. 官网提交。
+
+已完成（2026-11-18）：公开仓库 <https://github.com/EaZEaZE/RunLedger>（提交作者 Zhang Yan，含 6+1 次细粒度提交）；3 轮真实 Prompt 导出见 `submission/prompts/`；均值差 95% 置信区间已上线并同步 README 与技术简报 PDF；源码 ZIP 由 `git archive` 生成（54 条目，含 `app/icon.svg`，不含 `node_modules`/`.env.local`/`.next`）。
 
 ## 9. 建议的第一步
 
