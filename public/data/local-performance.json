@@ -1,0 +1,500 @@
+{
+  "schema_version": "1.0",
+  "experiment": {
+    "id": "local-performance",
+    "title": "本地高斯模糊性能计时",
+    "subtitle": "可分离卷积的加速，能否经受重复测量？",
+    "kind": "performance",
+    "created_at": "2026-11-16T23:39:59+08:00",
+    "duration_s": 0.627,
+    "metric": {
+      "key": "latency_ms",
+      "label": "单次耗时",
+      "unit": "ms",
+      "higher_is_better": false
+    },
+    "baseline_config": "full2d",
+    "target_seeds": 15,
+    "dataset": {
+      "name": "sklearn 示例照片 china.jpg",
+      "samples": 1,
+      "shape": [
+        427,
+        640,
+        3
+      ],
+      "source": "https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_sample_image.html",
+      "license_note": "随 scikit-learn 分发的真实示例照片；本地离线加载。"
+    },
+    "design": {
+      "repetitions": 15,
+      "first_call_separate": true,
+      "order": "预热测量按AB/BA交替，降低执行顺序与系统漂移偏差。",
+      "control": "相同图片、相同5×5高斯核、相同reflect边界；已校验两种实现输出一致。",
+      "limitations": "首次调用仅表示当前进程内第一次执行，不等于全新操作系统冷启动。"
+    },
+    "environment": {
+      "python": "3.9.13",
+      "numpy": "2.0.2",
+      "scipy": "1.13.1",
+      "sklearn": "1.6.1",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+      "logical_cpu": 16
+    },
+    "validation": {
+      "output_allclose": true,
+      "max_abs_error": 5.960464477539063e-08,
+      "tolerance": "atol=1e-6, rtol=1e-5"
+    }
+  },
+  "configs": [
+    {
+      "id": "full2d",
+      "name": "基线 · 二维卷积",
+      "short_name": "二维卷积",
+      "description": "每个颜色通道执行一次5×5二维卷积。",
+      "parameters": {
+        "operation": "ndimage.convolve",
+        "kernel": "5×5",
+        "sigma": 1.2
+      }
+    },
+    {
+      "id": "separable",
+      "name": "优化 · 可分离卷积",
+      "short_name": "可分离卷积",
+      "description": "将同一个高斯核拆成水平与垂直两次一维卷积。",
+      "parameters": {
+        "operation": "ndimage.convolve1d × 2",
+        "kernel": "5 + 5",
+        "sigma": 1.2
+      }
+    }
+  ],
+  "runs": [
+    {
+      "id": "perf-full2d-first-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 0,
+      "phase": "first_call",
+      "value": 15.4295,
+      "metrics": {
+        "latency_ms": 15.4295
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-separable-first-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 0,
+      "phase": "first_call",
+      "value": 10.2444,
+      "metrics": {
+        "latency_ms": 10.2444
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-full2d-r1-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 1,
+      "phase": "warm",
+      "value": 16.4835,
+      "metrics": {
+        "latency_ms": 16.4835
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-separable-r1-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 1,
+      "phase": "warm",
+      "value": 8.9998,
+      "metrics": {
+        "latency_ms": 8.9998
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-separable-r2-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 2,
+      "phase": "warm",
+      "value": 9.4287,
+      "metrics": {
+        "latency_ms": 9.4287
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-full2d-r2-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 2,
+      "phase": "warm",
+      "value": 16.8264,
+      "metrics": {
+        "latency_ms": 16.8264
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-full2d-r3-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 3,
+      "phase": "warm",
+      "value": 18.854,
+      "metrics": {
+        "latency_ms": 18.854
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-separable-r3-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 3,
+      "phase": "warm",
+      "value": 10.1313,
+      "metrics": {
+        "latency_ms": 10.1313
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-separable-r4-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 4,
+      "phase": "warm",
+      "value": 9.6815,
+      "metrics": {
+        "latency_ms": 9.6815
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-full2d-r4-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 4,
+      "phase": "warm",
+      "value": 15.7457,
+      "metrics": {
+        "latency_ms": 15.7457
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-full2d-r5-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 5,
+      "phase": "warm",
+      "value": 16.1386,
+      "metrics": {
+        "latency_ms": 16.1386
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-separable-r5-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 5,
+      "phase": "warm",
+      "value": 10.7672,
+      "metrics": {
+        "latency_ms": 10.7672
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "perf-separable-r6-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 6,
+      "phase": "warm",
+      "value": 8.6222,
+      "metrics": {
+        "latency_ms": 8.6222
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r6-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 6,
+      "phase": "warm",
+      "value": 15.7342,
+      "metrics": {
+        "latency_ms": 15.7342
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r7-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 7,
+      "phase": "warm",
+      "value": 18.3541,
+      "metrics": {
+        "latency_ms": 18.3541
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-separable-r7-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 7,
+      "phase": "warm",
+      "value": 12.6168,
+      "metrics": {
+        "latency_ms": 12.6168
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-separable-r8-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 8,
+      "phase": "warm",
+      "value": 11.5698,
+      "metrics": {
+        "latency_ms": 11.5698
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r8-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 8,
+      "phase": "warm",
+      "value": 22.2169,
+      "metrics": {
+        "latency_ms": 22.2169
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r9-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 9,
+      "phase": "warm",
+      "value": 21.3011,
+      "metrics": {
+        "latency_ms": 21.3011
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-separable-r9-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 9,
+      "phase": "warm",
+      "value": 10.7904,
+      "metrics": {
+        "latency_ms": 10.7904
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-separable-r10-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 10,
+      "phase": "warm",
+      "value": 12.6347,
+      "metrics": {
+        "latency_ms": 12.6347
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r10-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 10,
+      "phase": "warm",
+      "value": 29.451,
+      "metrics": {
+        "latency_ms": 29.451
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r11-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 11,
+      "phase": "warm",
+      "value": 19.4337,
+      "metrics": {
+        "latency_ms": 19.4337
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-separable-r11-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 11,
+      "phase": "warm",
+      "value": 14.3963,
+      "metrics": {
+        "latency_ms": 14.3963
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-separable-r12-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 12,
+      "phase": "warm",
+      "value": 13.6964,
+      "metrics": {
+        "latency_ms": 13.6964
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r12-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 12,
+      "phase": "warm",
+      "value": 19.475,
+      "metrics": {
+        "latency_ms": 19.475
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r13-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 13,
+      "phase": "warm",
+      "value": 19.9011,
+      "metrics": {
+        "latency_ms": 19.9011
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-separable-r13-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 13,
+      "phase": "warm",
+      "value": 9.2836,
+      "metrics": {
+        "latency_ms": 9.2836
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-separable-r14-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 14,
+      "phase": "warm",
+      "value": 11.626,
+      "metrics": {
+        "latency_ms": 11.626
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r14-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 14,
+      "phase": "warm",
+      "value": 21.5795,
+      "metrics": {
+        "latency_ms": 21.5795
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-full2d-r15-v1",
+      "config_id": "full2d",
+      "seed": null,
+      "repeat": 15,
+      "phase": "warm",
+      "value": 18.4885,
+      "metrics": {
+        "latency_ms": 18.4885
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    },
+    {
+      "id": "perf-separable-r15-v1",
+      "config_id": "separable",
+      "seed": null,
+      "repeat": 15,
+      "phase": "warm",
+      "value": 10.1875,
+      "metrics": {
+        "latency_ms": 10.1875
+      },
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:59+08:00"
+    }
+  ],
+  "provenance": {
+    "script": "experiments/run_experiments.py",
+    "command": "python experiments/run_experiments.py",
+    "data_mode": "real",
+    "description": "耗时来自time.perf_counter_ns；首次与预热测量分开保存。",
+    "runs_sha256": "e945fc9351617b109a60d127da254fa6e977eb0284720155787f12f913ec46dd"
+  }
+}

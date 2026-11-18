@@ -1,0 +1,284 @@
+{
+  "schema_version": "1.0",
+  "experiment": {
+    "id": "digits-small-sample",
+    "title": "digits 小样本图像分类",
+    "subtitle": "模型容量提升，还是随机种子的噪声？",
+    "kind": "classification",
+    "created_at": "2026-11-16T23:39:58+08:00",
+    "duration_s": 4.057,
+    "metric": {
+      "key": "accuracy",
+      "label": "测试准确率",
+      "unit": "%",
+      "higher_is_better": true
+    },
+    "baseline_config": "mlp32",
+    "target_seeds": 3,
+    "dataset": {
+      "name": "sklearn digits / UCI Optical Recognition of Handwritten Digits",
+      "samples": 1797,
+      "features": 64,
+      "classes": 10,
+      "image_shape": "8×8 灰度图",
+      "source": "https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html",
+      "license_note": "随 scikit-learn 分发的真实公开数据集；本地离线加载。"
+    },
+    "design": {
+      "train_samples": 360,
+      "test_samples": 540,
+      "split_seed": 2026,
+      "test_split_seed": 2027,
+      "seeds": [
+        11,
+        29,
+        47
+      ],
+      "control": "所有配置使用相同训练/测试划分；仅模型参数和MLP随机种子变化。",
+      "limitations": "受控小样本实验，不代表完整digits或SGG任务上的最优性能。"
+    },
+    "environment": {
+      "python": "3.9.13",
+      "numpy": "2.0.2",
+      "scipy": "1.13.1",
+      "sklearn": "1.6.1",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+      "logical_cpu": 16
+    }
+  },
+  "configs": [
+    {
+      "id": "mlp32",
+      "name": "基线 · MLP 32",
+      "short_name": "MLP 32",
+      "description": "单隐层32单元，作为所有提升声明的基线。",
+      "parameters": {
+        "hidden_layer_sizes": [
+          32
+        ],
+        "alpha": 0.0001,
+        "max_iter": 220
+      }
+    },
+    {
+      "id": "mlp128",
+      "name": "候选 · MLP 128",
+      "short_name": "MLP 128",
+      "description": "仅扩大单隐层宽度，检查容量提升是否超过种子波动。",
+      "parameters": {
+        "hidden_layer_sizes": [
+          128
+        ],
+        "alpha": 0.0001,
+        "max_iter": 220
+      }
+    },
+    {
+      "id": "mlp128_l2",
+      "name": "消融 · MLP 128 + L2",
+      "short_name": "128 + L2",
+      "description": "在128单元配置上仅调整L2正则强度。",
+      "parameters": {
+        "hidden_layer_sizes": [
+          128
+        ],
+        "alpha": 0.05,
+        "max_iter": 220
+      }
+    },
+    {
+      "id": "mlp64x2",
+      "name": "探索 · MLP 64×2",
+      "short_name": "MLP 64×2",
+      "description": "探索性双隐层配置，当前只执行一个种子，不能用于稳定排名。",
+      "parameters": {
+        "hidden_layer_sizes": [
+          64,
+          64
+        ],
+        "alpha": 0.0001,
+        "max_iter": 220
+      }
+    }
+  ],
+  "runs": [
+    {
+      "id": "digits-mlp32-s11-v1",
+      "config_id": "mlp32",
+      "seed": 11,
+      "repeat": 11,
+      "phase": "training",
+      "value": 94.0741,
+      "metrics": {
+        "accuracy": 94.0741,
+        "macro_recall": 94.1133
+      },
+      "duration_ms": 195.932,
+      "iterations": 220,
+      "converged": false,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:54+08:00"
+    },
+    {
+      "id": "digits-mlp32-s29-v1",
+      "config_id": "mlp32",
+      "seed": 29,
+      "repeat": 29,
+      "phase": "training",
+      "value": 93.8889,
+      "metrics": {
+        "accuracy": 93.8889,
+        "macro_recall": 93.8827
+      },
+      "duration_ms": 164.023,
+      "iterations": 220,
+      "converged": false,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:54+08:00"
+    },
+    {
+      "id": "digits-mlp32-s47-v1",
+      "config_id": "mlp32",
+      "seed": 47,
+      "repeat": 47,
+      "phase": "training",
+      "value": 92.5926,
+      "metrics": {
+        "accuracy": 92.5926,
+        "macro_recall": 92.6177
+      },
+      "duration_ms": 172.462,
+      "iterations": 220,
+      "converged": false,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:55+08:00"
+    },
+    {
+      "id": "digits-mlp128-s11-v1",
+      "config_id": "mlp128",
+      "seed": 11,
+      "repeat": 11,
+      "phase": "training",
+      "value": 94.6296,
+      "metrics": {
+        "accuracy": 94.6296,
+        "macro_recall": 94.6588
+      },
+      "duration_ms": 586.426,
+      "iterations": 211,
+      "converged": true,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:55+08:00"
+    },
+    {
+      "id": "digits-mlp128-s29-v1",
+      "config_id": "mlp128",
+      "seed": 29,
+      "repeat": 29,
+      "phase": "training",
+      "value": 94.2593,
+      "metrics": {
+        "accuracy": 94.2593,
+        "macro_recall": 94.2672
+      },
+      "duration_ms": 559.773,
+      "iterations": 208,
+      "converged": true,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:56+08:00"
+    },
+    {
+      "id": "digits-mlp128-s47-v1",
+      "config_id": "mlp128",
+      "seed": 47,
+      "repeat": 47,
+      "phase": "training",
+      "value": 94.0741,
+      "metrics": {
+        "accuracy": 94.0741,
+        "macro_recall": 94.0786
+      },
+      "duration_ms": 489.63,
+      "iterations": 215,
+      "converged": true,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:56+08:00"
+    },
+    {
+      "id": "digits-mlp128_l2-s11-v1",
+      "config_id": "mlp128_l2",
+      "seed": 11,
+      "repeat": 11,
+      "phase": "training",
+      "value": 94.6296,
+      "metrics": {
+        "accuracy": 94.6296,
+        "macro_recall": 94.6588
+      },
+      "duration_ms": 451.976,
+      "iterations": 207,
+      "converged": true,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:57+08:00"
+    },
+    {
+      "id": "digits-mlp128_l2-s29-v1",
+      "config_id": "mlp128_l2",
+      "seed": 29,
+      "repeat": 29,
+      "phase": "training",
+      "value": 94.2593,
+      "metrics": {
+        "accuracy": 94.2593,
+        "macro_recall": 94.2672
+      },
+      "duration_ms": 464.509,
+      "iterations": 204,
+      "converged": true,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:57+08:00"
+    },
+    {
+      "id": "digits-mlp128_l2-s47-v1",
+      "config_id": "mlp128_l2",
+      "seed": 47,
+      "repeat": 47,
+      "phase": "training",
+      "value": 94.0741,
+      "metrics": {
+        "accuracy": 94.0741,
+        "macro_recall": 94.0786
+      },
+      "duration_ms": 516.348,
+      "iterations": 210,
+      "converged": true,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    },
+    {
+      "id": "digits-mlp64x2-s11-v1",
+      "config_id": "mlp64x2",
+      "seed": 11,
+      "repeat": 11,
+      "phase": "training",
+      "value": 94.2593,
+      "metrics": {
+        "accuracy": 94.2593,
+        "macro_recall": 94.2885
+      },
+      "duration_ms": 400.522,
+      "iterations": 157,
+      "converged": true,
+      "batch": "original",
+      "recorded_at": "2026-11-16T23:39:58+08:00"
+    }
+  ],
+  "provenance": {
+    "script": "experiments/run_experiments.py",
+    "command": "python experiments/run_experiments.py",
+    "data_mode": "real",
+    "description": "所有数值由本地真实模型训练产生；无手工填写的指标。",
+    "runs_sha256": "526e40dc004701cef3010148e570ed66b250e6e1bee19b833440c8df233068b4"
+  }
+}

@@ -1,0 +1,652 @@
+{
+  "schema_version": "1.1.0",
+  "experiment": {
+    "id": "sleep-next-day-steps",
+    "title": "睡得更久后，第二天会走更多吗？",
+    "subtitle": "以个人当夜睡眠中位数分组，比较次日真实步数 · 不推断睡眠的因果效果",
+    "kind": "lifestyle",
+    "created_at": "2026-11-16T18:16:58.630774+00:00",
+    "duration_s": 0,
+    "metric": {
+      "key": "next_day_steps",
+      "label": "次日步数",
+      "unit": "步",
+      "higher_is_better": true
+    },
+    "baseline_config": "shorter_sleep",
+    "target_seeds": 18,
+    "dataset": {
+      "name": "FitBit Fitness Tracker Data / Fitabase 4.12.16–5.12.16",
+      "source": "https://www.kaggle.com/datasets/arashnic/fitbit",
+      "license_note": "Kaggle 数据卡标注 CC0: Public Domain；30名同意提交追踪器数据的Fitbit用户。仅作产品演示，不作医疗建议。",
+      "period": "2016-04-12 至 2016-05-12（具体记录范围以原始文件为准）",
+      "archive_download": "https://www.kaggle.com/api/v1/datasets/download/arashnic/fitbit",
+      "archive_sha256": "263bb05592792d1dbbd4b3c40b3203e7083489e085b38303dcf7e151c932f870",
+      "raw_files": [
+        "dailyActivity_merged.csv",
+        "sleepDay_merged.csv"
+      ]
+    },
+    "design": {
+      "analysis": "paired",
+      "配对方式": "同一参与者的较短睡眠后与较长睡眠后记录使用相同 repeat 编号",
+      "条件定义": "按每位参与者自身当夜睡眠时长中位数分为较短（<中位数）与较长（≥中位数）",
+      "日期连接": "睡眠日期严格连接下一日历日的 TotalSteps；不使用下一条记录替代",
+      "纳入规则": "次日 TotalSteps>0；当夜 TotalMinutesAsleep>0；每位参与者两种条件都至少有2个有效配对日",
+      "分析单位": "先求每位参与者在各条件下的次日平均步数，再做配对比较",
+      "因果边界": "睡眠时长未随机分配；同一人自身对照不能排除工作日、健康状态、活动安排等混杂，也不构成医疗诊断或睡眠建议"
+    },
+    "environment": {
+      "生成脚本": "Python 3.9.13 标准库",
+      "分析单位": "参与者在单个条件下的日均值",
+      "随机生成": "无；不生成、不补值、不修改原始结果"
+    }
+  },
+  "configs": [
+    {
+      "id": "shorter_sleep",
+      "name": "较短睡眠后的次日",
+      "short_name": "较短睡眠后",
+      "description": "当夜睡眠低于该参与者个人中位数",
+      "parameters": {
+        "sleep_split": "< within-person median",
+        "min_valid_pairs": 2
+      }
+    },
+    {
+      "id": "longer_sleep",
+      "name": "较长睡眠后的次日",
+      "short_name": "较长睡眠后",
+      "description": "当夜睡眠大于或等于该参与者个人中位数",
+      "parameters": {
+        "sleep_split": ">= within-person median",
+        "min_valid_pairs": 2
+      }
+    }
+  ],
+  "runs": [
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p01",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 1,
+      "phase": "participant_mean",
+      "value": 12354.8333,
+      "metrics": {
+        "next_day_steps": 12354.8333,
+        "observed_days": 12,
+        "sleep_minutes": 301.5
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-10T12:00:00Z",
+      "note": "同一参与者在该条件下的 12 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p01",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 1,
+      "phase": "participant_mean",
+      "value": 12278,
+      "metrics": {
+        "next_day_steps": 12278,
+        "observed_days": 12,
+        "sleep_minutes": 425.3333
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 12 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p02",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 2,
+      "phase": "participant_mean",
+      "value": 12172.5,
+      "metrics": {
+        "next_day_steps": 12172.5,
+        "observed_days": 2,
+        "sleep_minutes": 121.5
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-01T12:00:00Z",
+      "note": "同一参与者在该条件下的 2 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p02",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 2,
+      "phase": "participant_mean",
+      "value": 9746.5,
+      "metrics": {
+        "next_day_steps": 9746.5,
+        "observed_days": 2,
+        "sleep_minutes": 466.5
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-09T12:00:00Z",
+      "note": "同一参与者在该条件下的 2 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p03",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 3,
+      "phase": "participant_mean",
+      "value": 5681.6154,
+      "metrics": {
+        "next_day_steps": 5681.6154,
+        "observed_days": 13,
+        "sleep_minutes": 480
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 13 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p03",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 3,
+      "phase": "participant_mean",
+      "value": 5658.7143,
+      "metrics": {
+        "next_day_steps": 5658.7143,
+        "observed_days": 14,
+        "sleep_minutes": 534.0714
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 14 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p04",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 4,
+      "phase": "participant_mean",
+      "value": 9109.1429,
+      "metrics": {
+        "next_day_steps": 9109.1429,
+        "observed_days": 7,
+        "sleep_minutes": 420.4286
+      },
+      "batch": "original",
+      "recorded_at": "2016-04-29T12:00:00Z",
+      "note": "同一参与者在该条件下的 7 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p04",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 4,
+      "phase": "participant_mean",
+      "value": 10224.7143,
+      "metrics": {
+        "next_day_steps": 10224.7143,
+        "observed_days": 7,
+        "sleep_minutes": 478.2857
+      },
+      "batch": "original",
+      "recorded_at": "2016-04-28T12:00:00Z",
+      "note": "同一参与者在该条件下的 7 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p05",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 5,
+      "phase": "participant_mean",
+      "value": 11134.4286,
+      "metrics": {
+        "next_day_steps": 11134.4286,
+        "observed_days": 14,
+        "sleep_minutes": 243.0714
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-09T12:00:00Z",
+      "note": "同一参与者在该条件下的 14 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p05",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 5,
+      "phase": "participant_mean",
+      "value": 10837.6429,
+      "metrics": {
+        "next_day_steps": 10837.6429,
+        "observed_days": 14,
+        "sleep_minutes": 344.2143
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 14 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p06",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 6,
+      "phase": "participant_mean",
+      "value": 4879,
+      "metrics": {
+        "next_day_steps": 4879,
+        "observed_days": 3,
+        "sleep_minutes": 208.3333
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-06T12:00:00Z",
+      "note": "同一参与者在该条件下的 3 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p06",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 6,
+      "phase": "participant_mean",
+      "value": 6526.25,
+      "metrics": {
+        "next_day_steps": 6526.25,
+        "observed_days": 4,
+        "sleep_minutes": 417.25
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 4 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p07",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 7,
+      "phase": "participant_mean",
+      "value": 7985.6667,
+      "metrics": {
+        "next_day_steps": 7985.6667,
+        "observed_days": 12,
+        "sleep_minutes": 424.0833
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 12 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p07",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 7,
+      "phase": "participant_mean",
+      "value": 5990.8462,
+      "metrics": {
+        "next_day_steps": 5990.8462,
+        "observed_days": 13,
+        "sleep_minutes": 538.6154
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 13 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p08",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 8,
+      "phase": "participant_mean",
+      "value": 10269.3636,
+      "metrics": {
+        "next_day_steps": 10269.3636,
+        "observed_days": 11,
+        "sleep_minutes": 296.2727
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 11 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p08",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 8,
+      "phase": "participant_mean",
+      "value": 10532.8333,
+      "metrics": {
+        "next_day_steps": 10532.8333,
+        "observed_days": 12,
+        "sleep_minutes": 534.6667
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 12 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p09",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 9,
+      "phase": "participant_mean",
+      "value": 4944.8462,
+      "metrics": {
+        "next_day_steps": 4944.8462,
+        "observed_days": 13,
+        "sleep_minutes": 314.9231
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-09T12:00:00Z",
+      "note": "同一参与者在该条件下的 13 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p09",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 9,
+      "phase": "participant_mean",
+      "value": 5048.7857,
+      "metrics": {
+        "next_day_steps": 5048.7857,
+        "observed_days": 14,
+        "sleep_minutes": 443.4286
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 14 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p10",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 10,
+      "phase": "participant_mean",
+      "value": 8724,
+      "metrics": {
+        "next_day_steps": 8724,
+        "observed_days": 2,
+        "sleep_minutes": 109
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-02T12:00:00Z",
+      "note": "同一参与者在该条件下的 2 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p10",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 10,
+      "phase": "participant_mean",
+      "value": 10457,
+      "metrics": {
+        "next_day_steps": 10457,
+        "observed_days": 3,
+        "sleep_minutes": 140
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-09T12:00:00Z",
+      "note": "同一参与者在该条件下的 3 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p11",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 11,
+      "phase": "participant_mean",
+      "value": 8472,
+      "metrics": {
+        "next_day_steps": 8472,
+        "observed_days": 12,
+        "sleep_minutes": 367.4167
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 12 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p11",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 11,
+      "phase": "participant_mean",
+      "value": 8984.6154,
+      "metrics": {
+        "next_day_steps": 8984.6154,
+        "observed_days": 13,
+        "sleep_minutes": 500
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-10T12:00:00Z",
+      "note": "同一参与者在该条件下的 13 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p12",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 12,
+      "phase": "participant_mean",
+      "value": 8311,
+      "metrics": {
+        "next_day_steps": 8311,
+        "observed_days": 15,
+        "sleep_minutes": 386.7333
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 15 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p12",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 12,
+      "phase": "participant_mean",
+      "value": 8715.2667,
+      "metrics": {
+        "next_day_steps": 8715.2667,
+        "observed_days": 15,
+        "sleep_minutes": 541.9333
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 15 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p13",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 13,
+      "phase": "participant_mean",
+      "value": 9163.5,
+      "metrics": {
+        "next_day_steps": 9163.5,
+        "observed_days": 12,
+        "sleep_minutes": 362.8333
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-06T12:00:00Z",
+      "note": "同一参与者在该条件下的 12 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p13",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 13,
+      "phase": "participant_mean",
+      "value": 9134.3077,
+      "metrics": {
+        "next_day_steps": 9134.3077,
+        "observed_days": 13,
+        "sleep_minutes": 495.9231
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 13 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p14",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 14,
+      "phase": "participant_mean",
+      "value": 9296.125,
+      "metrics": {
+        "next_day_steps": 9296.125,
+        "observed_days": 8,
+        "sleep_minutes": 426.5
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-06T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p14",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 14,
+      "phase": "participant_mean",
+      "value": 6725.625,
+      "metrics": {
+        "next_day_steps": 6725.625,
+        "observed_days": 8,
+        "sleep_minutes": 545.125
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-09T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p15",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 15,
+      "phase": "participant_mean",
+      "value": 10470.0714,
+      "metrics": {
+        "next_day_steps": 10470.0714,
+        "observed_days": 14,
+        "sleep_minutes": 400.1429
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 14 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p15",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 15,
+      "phase": "participant_mean",
+      "value": 9178.6875,
+      "metrics": {
+        "next_day_steps": 9178.6875,
+        "observed_days": 16,
+        "sleep_minutes": 485.625
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 16 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p16",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 16,
+      "phase": "participant_mean",
+      "value": 8703.3,
+      "metrics": {
+        "next_day_steps": 8703.3,
+        "observed_days": 10,
+        "sleep_minutes": 399.2
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-10T12:00:00Z",
+      "note": "同一参与者在该条件下的 10 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p16",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 16,
+      "phase": "participant_mean",
+      "value": 10119,
+      "metrics": {
+        "next_day_steps": 10119,
+        "observed_days": 13,
+        "sleep_minutes": 495.3077
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 13 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p17",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 17,
+      "phase": "participant_mean",
+      "value": 9287.6667,
+      "metrics": {
+        "next_day_steps": 9287.6667,
+        "observed_days": 15,
+        "sleep_minutes": 382.3333
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 15 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p17",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 17,
+      "phase": "participant_mean",
+      "value": 8220.5333,
+      "metrics": {
+        "next_day_steps": 8220.5333,
+        "observed_days": 15,
+        "sleep_minutes": 530.4
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-09T12:00:00Z",
+      "note": "同一参与者在该条件下的 15 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-shorter_sleep-p18",
+      "config_id": "shorter_sleep",
+      "seed": null,
+      "repeat": 18,
+      "phase": "participant_mean",
+      "value": 3637.5714,
+      "metrics": {
+        "next_day_steps": 3637.5714,
+        "observed_days": 7,
+        "sleep_minutes": 378.7143
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-03T12:00:00Z",
+      "note": "同一参与者在该条件下的 7 天均值；不是单日独立样本"
+    },
+    {
+      "id": "sleep-next-day-steps-longer_sleep-p18",
+      "config_id": "longer_sleep",
+      "seed": null,
+      "repeat": 18,
+      "phase": "participant_mean",
+      "value": 2205.2857,
+      "metrics": {
+        "next_day_steps": 2205.2857,
+        "observed_days": 7,
+        "sleep_minutes": 492.1429
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-04T12:00:00Z",
+      "note": "同一参与者在该条件下的 7 天均值；不是单日独立样本"
+    }
+  ],
+  "provenance": {
+    "script": "experiments/prepare_lifestyle_data.py",
+    "command": "python experiments/prepare_lifestyle_data.py",
+    "data_mode": "public_observational_demo",
+    "description": "直接由CC0原始CSV按公开规则聚合；每个值都是参与者在某条件下的真实日均值，不是合成生活记录。",
+    "runs_sha256": "4edc3f93c189fdc9c722f000fbd49314ef2443bb5f37802215da2ee15480f1a0"
+  }
+}

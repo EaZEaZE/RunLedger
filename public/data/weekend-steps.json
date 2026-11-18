@@ -1,0 +1,1035 @@
+{
+  "schema_version": "1.1.0",
+  "experiment": {
+    "id": "weekend-steps",
+    "title": "周末会走得更多吗？",
+    "subtitle": "同一参与者的工作日与周末日均步数配对比较 · 公开观察性数据",
+    "kind": "lifestyle",
+    "created_at": "2026-11-16T18:16:58.624431+00:00",
+    "duration_s": 0,
+    "metric": {
+      "key": "daily_steps",
+      "label": "日均步数",
+      "unit": "步",
+      "higher_is_better": true
+    },
+    "baseline_config": "weekday",
+    "target_seeds": 32,
+    "dataset": {
+      "name": "FitBit Fitness Tracker Data / Fitabase 4.12.16–5.12.16",
+      "source": "https://www.kaggle.com/datasets/arashnic/fitbit",
+      "license_note": "Kaggle 数据卡标注 CC0: Public Domain；30名同意提交追踪器数据的Fitbit用户。仅作产品演示，不作医疗建议。",
+      "period": "2016-04-12 至 2016-05-12（具体记录范围以原始文件为准）",
+      "archive_download": "https://www.kaggle.com/api/v1/datasets/download/arashnic/fitbit",
+      "archive_sha256": "263bb05592792d1dbbd4b3c40b3203e7083489e085b38303dcf7e151c932f870",
+      "raw_files": [
+        "dailyActivity_merged.csv",
+        "sleepDay_merged.csv"
+      ]
+    },
+    "design": {
+      "analysis": "paired",
+      "配对方式": "同一参与者的 weekday 与 weekend 记录使用相同 repeat 编号",
+      "条件定义": "周一至周五为工作日；周六、周日为周末",
+      "纳入规则": "TotalSteps>0；每位参与者在两种条件下都至少有2个有效日",
+      "分析单位": "先求每位参与者在各条件下的日均步数，再比较参与者条件均值",
+      "因果边界": "未随机分配星期，结果只描述观察性关联；季节、工作、佩戴习惯等混杂仍可能存在"
+    },
+    "environment": {
+      "生成脚本": "Python 3.9.13 标准库",
+      "分析单位": "参与者在单个条件下的日均值",
+      "随机生成": "无；不生成、不补值、不修改原始结果"
+    }
+  },
+  "configs": [
+    {
+      "id": "weekday",
+      "name": "工作日",
+      "short_name": "工作日",
+      "description": "周一至周五且步数大于0的日期",
+      "parameters": {
+        "days": "Monday–Friday",
+        "min_valid_days": 2
+      }
+    },
+    {
+      "id": "weekend",
+      "name": "周末",
+      "short_name": "周末",
+      "description": "周六、周日且步数大于0的日期",
+      "parameters": {
+        "days": "Saturday–Sunday",
+        "min_valid_days": 2
+      }
+    }
+  ],
+  "runs": [
+    {
+      "id": "weekend-steps-weekday-p01",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 1,
+      "phase": "participant_mean",
+      "value": 12795.8182,
+      "metrics": {
+        "daily_steps": 12795.8182,
+        "observed_days": 22
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 22 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p01",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 1,
+      "phase": "participant_mean",
+      "value": 11763.875,
+      "metrics": {
+        "daily_steps": 11763.875,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p02",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 2,
+      "phase": "participant_mean",
+      "value": 4516.4348,
+      "metrics": {
+        "daily_steps": 4516.4348,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p02",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 2,
+      "phase": "participant_mean",
+      "value": 9272.875,
+      "metrics": {
+        "daily_steps": 9272.875,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p03",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 3,
+      "phase": "participant_mean",
+      "value": 6365.1364,
+      "metrics": {
+        "daily_steps": 6365.1364,
+        "observed_days": 22
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 22 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p03",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 3,
+      "phase": "participant_mean",
+      "value": 9807,
+      "metrics": {
+        "daily_steps": 9807,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p04",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 4,
+      "phase": "participant_mean",
+      "value": 3867.875,
+      "metrics": {
+        "daily_steps": 3867.875,
+        "observed_days": 16
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-06T12:00:00Z",
+      "note": "同一参与者在该条件下的 16 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p04",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 4,
+      "phase": "participant_mean",
+      "value": 3619.2,
+      "metrics": {
+        "daily_steps": 3619.2,
+        "observed_days": 5
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-01T12:00:00Z",
+      "note": "同一参与者在该条件下的 5 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p05",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 5,
+      "phase": "participant_mean",
+      "value": 1473.1538,
+      "metrics": {
+        "daily_steps": 1473.1538,
+        "observed_days": 13
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-06T12:00:00Z",
+      "note": "同一参与者在该条件下的 13 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p05",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 5,
+      "phase": "participant_mean",
+      "value": 2312.25,
+      "metrics": {
+        "daily_steps": 2312.25,
+        "observed_days": 4
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-07T12:00:00Z",
+      "note": "同一参与者在该条件下的 4 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p06",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 6,
+      "phase": "participant_mean",
+      "value": 11690.0435,
+      "metrics": {
+        "daily_steps": 11690.0435,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p06",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 6,
+      "phase": "participant_mean",
+      "value": 10452.375,
+      "metrics": {
+        "daily_steps": 10452.375,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p07",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 7,
+      "phase": "participant_mean",
+      "value": 5881.8261,
+      "metrics": {
+        "daily_steps": 5881.8261,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p07",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 7,
+      "phase": "participant_mean",
+      "value": 4661.375,
+      "metrics": {
+        "daily_steps": 4661.375,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p08",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 8,
+      "phase": "participant_mean",
+      "value": 4688.7391,
+      "metrics": {
+        "daily_steps": 4688.7391,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p08",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 8,
+      "phase": "participant_mean",
+      "value": 4797.75,
+      "metrics": {
+        "daily_steps": 4797.75,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p09",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 9,
+      "phase": "participant_mean",
+      "value": 8376.1429,
+      "metrics": {
+        "daily_steps": 8376.1429,
+        "observed_days": 14
+      },
+      "batch": "original",
+      "recorded_at": "2016-04-29T12:00:00Z",
+      "note": "同一参与者在该条件下的 14 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p09",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 9,
+      "phase": "participant_mean",
+      "value": 13522,
+      "metrics": {
+        "daily_steps": 13522,
+        "observed_days": 4
+      },
+      "batch": "original",
+      "recorded_at": "2016-04-24T12:00:00Z",
+      "note": "同一参与者在该条件下的 4 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p10",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 10,
+      "phase": "participant_mean",
+      "value": 7690.0435,
+      "metrics": {
+        "daily_steps": 7690.0435,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p10",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 10,
+      "phase": "participant_mean",
+      "value": 7169.75,
+      "metrics": {
+        "daily_steps": 7169.75,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p11",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 11,
+      "phase": "participant_mean",
+      "value": 7119.6429,
+      "metrics": {
+        "daily_steps": 7119.6429,
+        "observed_days": 14
+      },
+      "batch": "original",
+      "recorded_at": "2016-04-29T12:00:00Z",
+      "note": "同一参与者在该条件下的 14 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p11",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 11,
+      "phase": "participant_mean",
+      "value": 6259.6667,
+      "metrics": {
+        "daily_steps": 6259.6667,
+        "observed_days": 6
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-01T12:00:00Z",
+      "note": "同一参与者在该条件下的 6 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p12",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 12,
+      "phase": "participant_mean",
+      "value": 10486.6364,
+      "metrics": {
+        "daily_steps": 10486.6364,
+        "observed_days": 22
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 22 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p12",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 12,
+      "phase": "participant_mean",
+      "value": 12353.875,
+      "metrics": {
+        "daily_steps": 12353.875,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p13",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 13,
+      "phase": "participant_mean",
+      "value": 4330.1538,
+      "metrics": {
+        "daily_steps": 4330.1538,
+        "observed_days": 13
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 13 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p13",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 13,
+      "phase": "participant_mean",
+      "value": 3498,
+      "metrics": {
+        "daily_steps": 3498,
+        "observed_days": 4
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 4 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p14",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 14,
+      "phase": "participant_mean",
+      "value": 8281.0435,
+      "metrics": {
+        "daily_steps": 8281.0435,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p14",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 14,
+      "phase": "participant_mean",
+      "value": 4358.75,
+      "metrics": {
+        "daily_steps": 4358.75,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p15",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 15,
+      "phase": "participant_mean",
+      "value": 10332.913,
+      "metrics": {
+        "daily_steps": 10332.913,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p15",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 15,
+      "phase": "participant_mean",
+      "value": 12196.875,
+      "metrics": {
+        "daily_steps": 12196.875,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p16",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 16,
+      "phase": "participant_mean",
+      "value": 4746.7391,
+      "metrics": {
+        "daily_steps": 4746.7391,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p16",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 16,
+      "phase": "participant_mean",
+      "value": 4939.75,
+      "metrics": {
+        "daily_steps": 4939.75,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p17",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 17,
+      "phase": "participant_mean",
+      "value": 7710.2609,
+      "metrics": {
+        "daily_steps": 7710.2609,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p17",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 17,
+      "phase": "participant_mean",
+      "value": 7612.875,
+      "metrics": {
+        "daily_steps": 7612.875,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p18",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 18,
+      "phase": "participant_mean",
+      "value": 7580.6522,
+      "metrics": {
+        "daily_steps": 7580.6522,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p18",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 18,
+      "phase": "participant_mean",
+      "value": 13054.1429,
+      "metrics": {
+        "daily_steps": 13054.1429,
+        "observed_days": 7
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 7 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p19",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 19,
+      "phase": "participant_mean",
+      "value": 10449.0435,
+      "metrics": {
+        "daily_steps": 10449.0435,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p19",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 19,
+      "phase": "participant_mean",
+      "value": 3332.75,
+      "metrics": {
+        "daily_steps": 3332.75,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p20",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 20,
+      "phase": "participant_mean",
+      "value": 7886.3636,
+      "metrics": {
+        "daily_steps": 7886.3636,
+        "observed_days": 22
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 22 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p20",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 20,
+      "phase": "participant_mean",
+      "value": 12605.5,
+      "metrics": {
+        "daily_steps": 12605.5,
+        "observed_days": 6
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-01T12:00:00Z",
+      "note": "同一参与者在该条件下的 6 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p21",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 21,
+      "phase": "participant_mean",
+      "value": 8401.6,
+      "metrics": {
+        "daily_steps": 8401.6,
+        "observed_days": 15
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-09T12:00:00Z",
+      "note": "同一参与者在该条件下的 15 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p21",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 21,
+      "phase": "participant_mean",
+      "value": 8910.5,
+      "metrics": {
+        "daily_steps": 8910.5,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p22",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 22,
+      "phase": "participant_mean",
+      "value": 6587.7647,
+      "metrics": {
+        "daily_steps": 6587.7647,
+        "observed_days": 17
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-09T12:00:00Z",
+      "note": "同一参与者在该条件下的 17 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p22",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 22,
+      "phase": "participant_mean",
+      "value": 7406.4286,
+      "metrics": {
+        "daily_steps": 7406.4286,
+        "observed_days": 7
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 7 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p23",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 23,
+      "phase": "participant_mean",
+      "value": 4470.2727,
+      "metrics": {
+        "daily_steps": 4470.2727,
+        "observed_days": 11
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-06T12:00:00Z",
+      "note": "同一参与者在该条件下的 11 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p23",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 23,
+      "phase": "participant_mean",
+      "value": 2723.1667,
+      "metrics": {
+        "daily_steps": 2723.1667,
+        "observed_days": 6
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-07T12:00:00Z",
+      "note": "同一参与者在该条件下的 6 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p24",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 24,
+      "phase": "participant_mean",
+      "value": 9942.5652,
+      "metrics": {
+        "daily_steps": 9942.5652,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p24",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 24,
+      "phase": "participant_mean",
+      "value": 9370,
+      "metrics": {
+        "daily_steps": 9370,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p25",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 25,
+      "phase": "participant_mean",
+      "value": 14065.5556,
+      "metrics": {
+        "daily_steps": 14065.5556,
+        "observed_days": 18
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-06T12:00:00Z",
+      "note": "同一参与者在该条件下的 18 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p25",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 25,
+      "phase": "participant_mean",
+      "value": 6871.5,
+      "metrics": {
+        "daily_steps": 6871.5,
+        "observed_days": 6
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-01T12:00:00Z",
+      "note": "同一参与者在该条件下的 6 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p26",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 26,
+      "phase": "participant_mean",
+      "value": 10161,
+      "metrics": {
+        "daily_steps": 10161,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p26",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 26,
+      "phase": "participant_mean",
+      "value": 8117.4286,
+      "metrics": {
+        "daily_steps": 8117.4286,
+        "observed_days": 7
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 7 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p27",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 27,
+      "phase": "participant_mean",
+      "value": 14297.3478,
+      "metrics": {
+        "daily_steps": 14297.3478,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p27",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 27,
+      "phase": "participant_mean",
+      "value": 16102.875,
+      "metrics": {
+        "daily_steps": 16102.875,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p28",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 28,
+      "phase": "participant_mean",
+      "value": 6108.1429,
+      "metrics": {
+        "daily_steps": 6108.1429,
+        "observed_days": 14
+      },
+      "batch": "original",
+      "recorded_at": "2016-04-29T12:00:00Z",
+      "note": "同一参与者在该条件下的 14 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p28",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 28,
+      "phase": "participant_mean",
+      "value": 9411.75,
+      "metrics": {
+        "daily_steps": 9411.75,
+        "observed_days": 4
+      },
+      "batch": "original",
+      "recorded_at": "2016-04-24T12:00:00Z",
+      "note": "同一参与者在该条件下的 4 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p29",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 29,
+      "phase": "participant_mean",
+      "value": 9814,
+      "metrics": {
+        "daily_steps": 9814,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p29",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 29,
+      "phase": "participant_mean",
+      "value": 5565.875,
+      "metrics": {
+        "daily_steps": 5565.875,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p30",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 30,
+      "phase": "participant_mean",
+      "value": 7599.4091,
+      "metrics": {
+        "daily_steps": 7599.4091,
+        "observed_days": 22
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-11T12:00:00Z",
+      "note": "同一参与者在该条件下的 22 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p30",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 30,
+      "phase": "participant_mean",
+      "value": 6995.875,
+      "metrics": {
+        "daily_steps": 6995.875,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p31",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 31,
+      "phase": "participant_mean",
+      "value": 2791.1429,
+      "metrics": {
+        "daily_steps": 2791.1429,
+        "observed_days": 14
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-04T12:00:00Z",
+      "note": "同一参与者在该条件下的 14 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p31",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 31,
+      "phase": "participant_mean",
+      "value": 2936.4,
+      "metrics": {
+        "daily_steps": 2936.4,
+        "observed_days": 5
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-01T12:00:00Z",
+      "note": "同一参与者在该条件下的 5 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekday-p32",
+      "config_id": "weekday",
+      "seed": null,
+      "repeat": 32,
+      "phase": "participant_mean",
+      "value": 15792.6087,
+      "metrics": {
+        "daily_steps": 15792.6087,
+        "observed_days": 23
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-12T12:00:00Z",
+      "note": "同一参与者在该条件下的 23 天均值；不是单日独立样本"
+    },
+    {
+      "id": "weekend-steps-weekend-p32",
+      "config_id": "weekend",
+      "seed": null,
+      "repeat": 32,
+      "phase": "participant_mean",
+      "value": 16751.375,
+      "metrics": {
+        "daily_steps": 16751.375,
+        "observed_days": 8
+      },
+      "batch": "original",
+      "recorded_at": "2016-05-08T12:00:00Z",
+      "note": "同一参与者在该条件下的 8 天均值；不是单日独立样本"
+    }
+  ],
+  "provenance": {
+    "script": "experiments/prepare_lifestyle_data.py",
+    "command": "python experiments/prepare_lifestyle_data.py",
+    "data_mode": "public_observational_demo",
+    "description": "直接由CC0原始CSV按公开规则聚合；每个值都是参与者在某条件下的真实日均值，不是合成生活记录。",
+    "runs_sha256": "be33c24502a9df093fc9d3a9f4ae1fba2affb7c81a841b971038cd52bcb394ab"
+  }
+}

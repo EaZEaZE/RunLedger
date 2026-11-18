@@ -1,0 +1,69 @@
+{
+  "generated_at": "2026-11-16T18:16:58.635863+00:00",
+  "source_page": "https://www.kaggle.com/datasets/arashnic/fitbit",
+  "source_archive_url": "https://www.kaggle.com/api/v1/datasets/download/arashnic/fitbit",
+  "license": "CC0-1.0 (as labeled on the Kaggle data card)",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "archive_sha256": "263bb05592792d1dbbd4b3c40b3203e7083489e085b38303dcf7e151c932f870",
+  "raw_files": {
+    "dailyActivity_merged.csv": {
+      "path": "data/dailyActivity_merged.csv",
+      "sha256": "4b8f557eb29cd929cee7cc2d2a5e7704578bbffbc42c352e7b0c42bc4f3c6ac8",
+      "rows": 940
+    },
+    "sleepDay_merged.csv": {
+      "path": "data/sleepDay_merged.csv",
+      "sha256": "2d4250ca47dfc74263f1b61fe4ba3e338c83faab0d352fb0fefa93464b170e53",
+      "rows": 413
+    }
+  },
+  "valid_activity_days": 863,
+  "valid_sleep_days": 410,
+  "outputs": [
+    {
+      "output": "public/data/weekend-steps.json",
+      "output_sha256": "2d629d4be3bcf691458e496214f4ca92616f2958f608fc0519e87b1dfff60b94",
+      "runs_sha256": "be33c24502a9df093fc9d3a9f4ae1fba2affb7c81a841b971038cd52bcb394ab",
+      "run_count": 64,
+      "stats": {
+        "weekday": {
+          "n": 32,
+          "mean": 8009.3772,
+          "sample_sd": 3426.5521,
+          "min": 1473.1538,
+          "max": 15792.6087
+        },
+        "weekend": {
+          "n": 32,
+          "mean": 8086.0565,
+          "sample_sd": 3972.2121,
+          "min": 2312.25,
+          "max": 16751.375
+        }
+      }
+    },
+    {
+      "output": "public/data/sleep-next-day-steps.json",
+      "output_sha256": "c96b5ee6410da60a21ac9656352996470a5cd892839b3d1c674753721d2b6134",
+      "runs_sha256": "4edc3f93c189fdc9c722f000fbd49314ef2443bb5f37802215da2ee15480f1a0",
+      "run_count": 36,
+      "stats": {
+        "shorter_sleep": {
+          "n": 18,
+          "mean": 8588.7017,
+          "sample_sd": 2448.9223,
+          "min": 3637.5714,
+          "max": 12354.8333
+        },
+        "longer_sleep": {
+          "n": 18,
+          "mean": 8365.8116,
+          "sample_sd": 2528.6009,
+          "min": 2205.2857,
+          "max": 12278
+        }
+      }
+    }
+  ],
+  "method_note": "Observational associations only. Participant-level aggregation avoids pretending repeated days are independent people; it does not establish causation or statistical significance."
+}
