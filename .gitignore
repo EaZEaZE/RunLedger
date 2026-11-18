@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.env.local
+.env*.local
+__pycache__/
+*.pyc
+.DS_Store
+data/*.zip
+submission/*.zip
+tsconfig.tsbuildinfo
+delivery-note/
+docs/
+cdp-check*.mjs
