@@ -81,6 +81,14 @@ export interface ConfigStats {
   cv: number;
 }
 
+export interface ConfidenceInterval {
+  low: number;
+  high: number;
+  margin: number;
+  df: number;
+  method: "paired-t" | "welch-t";
+}
+
 export interface Claim {
   baseline: ConfigStats;
   candidate: ConfigStats;
@@ -88,6 +96,7 @@ export interface Claim {
   improvement: number;
   noise: number;
   signalRatio: number;
+  ci95: ConfidenceInterval | null;
   verdict: "insufficient" | "noise" | "weak" | "supported" | "no_gain";
   label: string;
   explanation: string;

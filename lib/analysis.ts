@@ -1,5 +1,6 @@
 import type {
   Claim,
+  ConfidenceInterval,
   ConfigStats,
   Diagnostic,
   ExperimentData,
@@ -14,6 +15,66 @@ export function quantile(sorted: number[], q: number): number {
   return sorted[base + 1] !== undefined
     ? sorted[base] + rest * (sorted[base + 1] - sorted[base])
     : sorted[base];
+}
+
+const T_975_SMALL: Record<number, number> = { 1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776 };
+
+/**
+ * 双侧 95% t 分布临界值。df<5 用查表值，其余用 Abramowitz & Stegun 26.7.5 级数近似。
+ * 近似值仅用于展示区间，不作为显著性判定。
+ */
+export function tCritical95(df: number): number {
+  if (!Number.isFinite(df) || df < 1) return NaN;
+  const floor = Math.floor(df);
+  if (floor <= 4) return T_975_SMALL[floor];
+  const x = 1.959964;
+  const v = df;
+  const t = x
+    + (x ** 3 + x) / (4 * v)
+    + (5 * x ** 5 + 16 * x ** 3 + 3 * x) / (96 * v ** 2)
+    + (3 * x ** 7 + 19 * x ** 5 + 17 * x ** 3 - 15 * x) / (384 * v ** 3);
+  return Math.max(x, t);
+}
+
+/** 均值差的 95% 置信区间；配对设计用配对差，独立设计用 Welch–Satterthwaite 自由度。 */
+export function meanDifferenceCi95(
+  baseline: ConfigStats,
+  candidate: ConfigStats,
+  differences: number[] | null,
+): ConfidenceInterval | null {
+  let center: number;
+  let se: number;
+  let df: number;
+  let method: ConfidenceInterval["method"];
+
+  if (differences && differences.length >= 2) {
+    const summary = summarize(differences);
+    center = summary.mean;
+    se = summary.sd / Math.sqrt(summary.n);
+    df = summary.n - 1;
+    method = "paired-t";
+  } else if (baseline.n >= 2 && candidate.n >= 2) {
+    const v1 = (baseline.sd ** 2) / baseline.n;
+    const v2 = (candidate.sd ** 2) / candidate.n;
+    center = candidate.mean - baseline.mean;
+    se = Math.sqrt(v1 + v2);
+    const denom = (v1 ** 2) / (baseline.n - 1) + (v2 ** 2) / (candidate.n - 1);
+    df = denom > 0 ? (v1 + v2) ** 2 / denom : baseline.n + candidate.n - 2;
+    method = "welch-t";
+  } else {
+    return null;
+  }
+
+  const t = tCritical95(df);
+  const margin = t * se;
+  if (!Number.isFinite(margin)) return null;
+  return {
+    low: center - margin,
+    high: center + margin,
+    margin,
+    df,
+    method,
+  };
 }
 
 export function summarize(values: number[]): Omit<ConfigStats, "configId" | "runs"> {
@@ -113,7 +174,8 @@ export function getClaim(data: ExperimentData, candidateId: string): Claim | nul
       : "均值差达到2倍以上组内标准差；仍应结合样本量、环境和任务假设判断。";
   }
   if (lifestyle) explanation += " 观察性关联不代表该条件导致了变化。";
-  return { baseline, candidate, rawDelta, improvement, noise, signalRatio, verdict, label, explanation };
+  const ci95 = enough ? meanDifferenceCi95(baseline, candidate, hasPairedEstimate ? differences : null) : null;
+  return { baseline, candidate, rawDelta, improvement, noise, signalRatio, ci95, verdict, label, explanation };
 }
 
 export function getClaims(data: ExperimentData): Claim[] {

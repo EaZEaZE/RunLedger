@@ -145,6 +145,10 @@ a { color: inherit; }
 .signal-track .threshold { position: absolute; top: -3px; width: 1px; height: 13px; background: rgba(255,255,255,.4); }
 .signal-track .threshold.one { left: 50%; }.signal-track .threshold.two { left: 100%; }
 .signal-meter > p { color: #9db3a9; margin: 10px 0 0; font-size: 10px; line-height: 1.6; }
+.ci-line { margin-top: 12px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; background: rgba(255,255,255,.03); display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.ci-line > span { color: #8fa99e; font-size: 10px; letter-spacing: .04em; }
+.ci-line > strong { color: var(--lime); font-size: 13px; font-variant-numeric: tabular-nums; }
+.ci-line > em { flex-basis: 100%; color: #9db3a9; font-size: 10px; font-style: normal; line-height: 1.6; }
 
 .why-not { border-top: 1px solid rgba(255,255,255,.1); padding-top: 16px; margin-top: 16px; }
 .why-not strong { display: flex; align-items: center; gap: 6px; color: var(--lime); font-size: 13px; }

@@ -172,6 +172,19 @@ export function Overview({
               <i className="threshold one" /><i className="threshold two" />
             </div>
             <p>{claim.explanation}</p>
+            {claim.ci95 && (
+              <div className="ci-line">
+                <span>均值差 95% 置信区间</span>
+                <strong>[{formatNumber(claim.ci95.low)}, {formatNumber(claim.ci95.high)}]{unit}</strong>
+                <em>
+                  {claim.ci95.method === "paired-t" ? "配对 t 区间" : "Welch t 区间"}，df≈{formatNumber(claim.ci95.df, 1)}。
+                  {claim.ci95.low <= 0 && claim.ci95.high >= 0
+                    ? "区间跨过 0，方向尚未确定，需继续补录。"
+                    : "区间未跨过 0，但样本量有限，仍以复测计划为准。"}
+                  区间为描述性不确定性，不用于显著性判定。
+                </em>
+              </div>
+            )}
           </div>
         )}
         {claim && claim.verdict !== "supported" && (
@@ -181,7 +194,7 @@ export function Overview({
               <li>信号噪声比 {formatNumber(claim.signalRatio)} 未达到 2 倍波动阈值，差异可能只是随机波动。</li>
               <li>当前样本量有限（基线 {baseline?.n ?? 0} / 候选 {candidate?.n ?? 0}），不能排除偶然。</li>
               <li>{lifestyle ? "观察性记录未随机分配条件，时间、环境等混杂仍可能存在。" : "未控制所有运行条件，重复之间的差异不等于配置差异。"}</li>
-              <li>信号噪声比是复测排序启发式，不是 p 值、置信区间或统计显著性。</li>
+              <li>信号噪声比是复测排序启发式，不是 p 值；上方置信区间只描述均值差的不确定性，同样不用于显著性判定。</li>
             </ul>
             <button className="text-button" onClick={() => onNavigate("rerun")}>查看复测计划 →</button>
           </div>
